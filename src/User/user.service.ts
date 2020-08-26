@@ -7,7 +7,6 @@ import { CreatePostDto } from './create-user-post.dto'
 
 @Injectable()
 export class UsersService {
-    private users: User[] = [];
 
     constructor(@InjectRepository(User) private usersRepository: Repository<User>) {
     }
@@ -21,14 +20,16 @@ export class UsersService {
     }
 
 
-    async getUser(_id: string): Promise<User[]>{
+    async getUser(_id: string){
         // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_id.toString()}'`);
-        return await this.usersRepository.find({Id: _id});
+        const user = await this.usersRepository.findOne({Id: _id});
+        return user;
     }
 
     async createUser(_user: CreatePostDto){
         // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_user.Id}'`);
-        return await this.usersRepository.save(_user);
+        await this.usersRepository.save(_user);
+        return true;
     }
 
     // async getUser(_id: number): Promise<User[]> {
@@ -44,6 +45,6 @@ export class UsersService {
     }
 
     async deleteUser(user: string) {
-        return this.usersRepository.delete(user);
+        return await this.usersRepository.delete(user);
     }
 }

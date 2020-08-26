@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Put, Delete,Param} from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Delete,Param, ParseUUIDPipe } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './user.entity';
 import { CreatePostDto } from './create-user-post.dto'
@@ -7,9 +7,9 @@ export class UsersController {
 
     constructor(private service: UsersService) { }
 
-    @Get(':id')
-    get(@Param() params) {
-        return this.service.getUser(params.id);
+    @Get(':uuid')
+    get(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
+        return this.service.getUser(uuid);
         // return this.service.getUsers();
     }
 
