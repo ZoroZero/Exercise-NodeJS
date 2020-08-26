@@ -1,4 +1,3 @@
-
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -14,15 +13,12 @@ export class UsersService {
     
 
     async getUsers(): Promise<User[]> {
-        // return await this.usersRepository.query(`SELECT * FROM "User"`);
-
         return await this.usersRepository.find();
     }
 
 
     async getUser(_id: string){
-        // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_id.toString()}'`);
-        return await this.usersRepository.findOne({Id: _id});
+        return await this.usersRepository.findOne({id: _id});
     }
 
     async createUser(_user: CreatePostDto){
@@ -38,7 +34,7 @@ export class UsersService {
     // }
 
     async updateUser(user: User) {
-        return await this.usersRepository.update(user.Id, user)
+        return await this.usersRepository.update(user.id, user)
         // return await this.usersRepository.save(user);
     }
 
