@@ -16,7 +16,18 @@ export class UsersController {
     @Post()
     create(@Body() user: CreatePostDto) {
         // console.log(user)
-        return this.service.createUser(user);
+        var response = {};
+
+        return this.service.createUser(user).then(function(res){
+            console.log(res);
+            return {
+                "statusCode" : 200
+            }
+            console.log(response);
+        })
+        .catch(function(err){
+            return err
+        });
     }
 
     @Put()

@@ -22,14 +22,12 @@ export class UsersService {
 
     async getUser(_id: string){
         // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_id.toString()}'`);
-        const user = await this.usersRepository.findOne({Id: _id});
-        return user;
+        return await this.usersRepository.findOne({Id: _id});
     }
 
     async createUser(_user: CreatePostDto){
         // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_user.Id}'`);
-        await this.usersRepository.save(_user);
-        return true;
+        return await this.usersRepository.save(_user);
     }
 
     // async getUser(_id: number): Promise<User[]> {
