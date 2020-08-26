@@ -1,0 +1,16 @@
+do $$
+begin 
+for i in 1..50 loop
+	INSERT INTO public."User"("Id", "Username", "Password", "FirstName", "LastName", "DoB")
+	VALUES (uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), 
+			Concat( 'user' , i), 
+			Concat('pass' , i), 
+			Concat('firstname ' , i), 
+			Concat('lastname ' , i), 
+			timestamp '2014-01-10 20:00:00' +
+			random() * (timestamp '2014-01-20 20:00:00' -
+						timestamp '2014-01-10 10:00:00'));
+end loop;
+end;
+$$;
+SELECT * from User
