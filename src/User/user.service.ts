@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpStatus, HttpService, Res, Response, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -18,27 +18,61 @@ export class UsersService {
 
 
     async getUser(_id: string){
-        return await this.usersRepository.findOne({id: _id});
+        return await this.usersRepository.findOne({id: _id}).then(function(res){
+            if(res){
+                return res
+            }
+            throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
+        })
+        .catch(function(err){
+            throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+        });;
     }
 
     async createUser(_user: CreatePostDto){
         // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_user.Id}'`);
-        return await this.usersRepository.save(_user);
+        return await this.usersRepository.save(_user).then(function(res){
+            // console.log(res);
+            // return {
+            //     "statusCode" : 200,
+            //     'message': "Successfully delete user"
+            // }
+            return true;
+        })
+        .catch(function(err){
+            // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);     
+            return false;
+        });;
     }
 
-    // async getUser(_id: number): Promise<User[]> {
-    //     return await this.usersRepository.find({
-    //         select: ["fullName", "birthday", "isActive"],
-    //         where: [{ "id": _id }]
-    //     });
-    // }
 
     async updateUser(user: User) {
-        return await this.usersRepository.update(user.id, user)
-        // return await this.usersRepository.save(user);
+        return await this.usersRepository.update(user.id, user).then(function(res){
+            // console.log(res);
+            // return {
+            //     "statusCode" : 200,
+            //     'message': "Successfully delete user"
+            // }
+            return true;
+        })
+        .catch(function(err){
+            // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);     
+            return false;
+        });
     }
 
     async deleteUser(user: string) {
-        return await this.usersRepository.delete(user);
+        return await this.usersRepository.delete(user).then(function(res){
+            // console.log(res);
+            // return {
+            //     "statusCode" : 200,
+            //     'message': "Successfully delete user"
+            // }
+            return true;
+        })
+        .catch(function(err){
+            return false;
+            // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);     
+        });;
     }
 }

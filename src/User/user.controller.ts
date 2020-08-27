@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, Put, Delete,Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Delete,Param, ParseUUIDPipe, HttpException, HttpStatus, HttpService, Res, Response } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './user.entity';
 import { CreatePostDto } from './create-user-post.dto'
+import { Http2ServerResponse } from 'http2';
 @Controller('users')
 export class UsersController {
 
@@ -24,45 +25,16 @@ export class UsersController {
         // console.log(user)
         // var response = {};
 
-        return this.service.createUser(user).then(function(res){
-            console.log(res);
-            return {
-                "statusCode" : 200,
-                "message": "Successfully add new user"
-            }
-        })
-        .catch(function(err){
-            return {
-                "statusCode" : 401
-            }
-        });
+        return this.service.createUser(user);
     }
 
     @Put()
     update(@Body() user: User) {
-        return this.service.updateUser(user).then(function(res){
-            console.log(res);
-            return {
-                "statusCode" : 200,
-                'message': "Successfully update user"
-            }
-        })
-        .catch(function(err){
-            return err
-        });
+        return this.service.updateUser(user);
     }
 
-    @Delete(':id')
-    deleteUser(@Param() params) {
-        return this.service.deleteUser(params.id).then(function(res){
-            console.log(res);
-            return {
-                "statusCode" : 200,
-                'message': "Successfully delete user"
-            }
-        })
-        .catch(function(err){
-            return err
-        });
+    @Delete(':uuid')
+    deleteUser(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
+        return this.service.deleteUser(uuid);
     }
 }
