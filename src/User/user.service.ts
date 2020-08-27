@@ -1,8 +1,9 @@
-import { Injectable, Inject, HttpStatus, HttpService, Res, Response, HttpException } from '@nestjs/common';
+import { Injectable, UseFilters, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreatePostDto } from './create-user-post.dto'
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
 
 @Injectable()
 export class UsersService {
@@ -16,17 +17,18 @@ export class UsersService {
         return await this.usersRepository.find();
     }
 
-
+    
     async getUser(_id: string){
-        return await this.usersRepository.findOne({id: _id}).then(function(res){
-            if(res){
-                return res
-            }
-            throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
-        })
-        .catch(function(err){
-            throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
-        });;
+        return await this.usersRepository.findOne({id: _id});
+        // .then(function(res){
+        //     if(res){
+        //         return res
+        //     }
+        //     throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
+        // })
+        // .catch(function(err){
+        //     throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+        // });;
     }
 
     async createUser(_user: CreatePostDto){

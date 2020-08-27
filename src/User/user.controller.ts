@@ -1,20 +1,24 @@
-import { Controller, Post, Body, Get, Put, Delete,Param, ParseUUIDPipe, HttpException, HttpStatus, HttpService, Res, Response } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Delete,Param, ParseUUIDPipe,  UseFilters, UseInterceptors} from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './user.entity';
 import { CreatePostDto } from './create-user-post.dto'
-import { Http2ServerResponse } from 'http2';
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
+import { TransformInterceptor } from '../interceptors/response.interceptor';
 @Controller('users')
 export class UsersController {
 
     constructor(private service: UsersService) { }
 
     @Get(':uuid')
+    @UseFilters(new HttpExceptionFilter())
+    @UseInterceptors(TransformInterceptor)
     get(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
         return this.service.getUser(uuid);
         // return this.service.getUsers();
     }
 
     @Get('')
+    @UseInterceptors(TransformInterceptor)
     getAll() {
         return this.service.getUsers();
         // return this.service.getUsers();
