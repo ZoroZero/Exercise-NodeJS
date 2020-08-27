@@ -30,19 +30,19 @@ export class UsersService {
     }
 
     async createUser(_user: CreatePostDto){
-        // return await this.usersRepository.query(`SELECT * FROM "User" WHERE "Id" = '${_user.Id}'`);
-        return await this.usersRepository.save(_user).then(function(res){
-            // console.log(res);
-            // return {
-            //     "statusCode" : 200,
-            //     'message': "Successfully delete user"
-            // }
-            return true;
-        })
-        .catch(function(err){
-            // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);     
-            return false;
-        });;
+        return await this.usersRepository.save(_user);
+        // .then(function(res){
+        //     // console.log(res);
+        //     // return {
+        //     //     "statusCode" : 200,
+        //     //     'message': "Successfully delete user"
+        //     // }
+        //     return true;
+        // })
+        // .catch(function(err){
+        //     // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);     
+        //     return false;
+        // });;
     }
 
 
